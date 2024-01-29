@@ -1,0 +1,25 @@
+import logging
+import os
+
+# Create a logger object
+logger = logging.getLogger('my_prediction_logger')
+
+# Set the level of the logger. This can be DEBUG, INFO, WARNING, ERROR, or CRITICAL
+logger.setLevel(logging.INFO)
+
+# Create a file handler which logs even debug messages
+log_path = '/var/log/my_django_app'  # Adjust the path according to your server's file system
+if not os.path.exists(log_path):
+    os.makedirs(log_path)
+fh = logging.FileHandler(os.path.join(log_path, 'prediction_model.log'))
+
+# Create a formatter and set it for the handler
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(fh)
+
+# Now you can use logger.info(), logger.debug(), logger.warning(), etc to log messages.
+# For example, inside your predict function after calculating the confidence:
+logger.info(f"Model Accuracy (R^2 score): {confidence * 100:.2f}%")
